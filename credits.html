@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>クレジット | VTuber事務所シミュレーション</title>
+  <script>
+  /* =====================================================
+      ✏️ テキスト編集エリア（ここだけ編集すればOKです）
+     ===================================================== */
+
+  const PAGE = {
+
+    /* ---------- スタッフ ----------
+       role（役割）と name（名前）を設定してください。
+       不要な項目は行ごと削除、追加したい場合はコピーして貼り付けてください。
+    ---------------------------------------- */
+    staff: [
+      { role: "Game Design & Planning", name: "（仮）プランナー名" },
+      { role: "Programming",            name: "（仮）エンジニア名" },
+      { role: "Art Direction & Illustration", name: "（仮）デザイナー名" },
+      { role: "Sound & Music",          name: "（仮）サウンドクリエイター名" },
+    ],
+
+    /* ---------- スペシャルサンクス ----------
+       name（名前）と note（補足）を設定してください。
+       note は不要なら "" にしてください。
+    ---------------------------------------- */
+    specialThanks: [
+      { name: "（仮）スペシャルサンクス", note: "テストプレイヤー・フィードバック協力者の皆さま" },
+    ],
+
+    /* ---------- 使用ライブラリ・素材 ----------
+       title（名称）と description（説明）を設定してください。
+    ---------------------------------------- */
+    libraries: [
+      { title: "Web Audio API",  description: "ブラウザ標準 Web Audio API を使用しています。" },
+      { title: "Canvas API",     description: "ブラウザ標準 Canvas 2D API を使用しています。" },
+      { title: "効果音・BGM",    description: "（仮）使用素材の帰属情報をここに記載します。" },
+    ],
+
+    /* ---------- コピーライト表記 ---------- */
+    copyright: "© 2026 VTuber事務所シミュレーション. All rights reserved.",
+
+    /* ---------- 一番下の注釈 ----------
+       不要なら "" にしてください。
+    ---------------------------------------- */
+    footnote: ""
+
+  };
+
+  /* =====================================================
+      ⚠️ ここから下は触らないでください
+     ===================================================== */
+  </script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #04040e;
+      color: #fff;
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', Meiryo, sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px 60px;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    .page-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: #8070a8;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #d080ff 0%, #80d0ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 40px;
+      filter: drop-shadow(0 0 18px rgba(176,96,255,0.5));
+    }
+    .credit-block { margin-bottom: 32px; }
+    .credit-role {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      color: #8070a8;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .credit-name { font-size: 1rem; font-weight: 700; color: #c8b8e8; letter-spacing: 0.05em; }
+    .credit-note { font-size: 0.78rem; color: #a090c8; margin-top: 3px; }
+    .divider { border: none; border-top: 1px solid rgba(176,96,255,0.12); margin: 36px 0; }
+    .section-title {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      color: #c080ff;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .license-block {
+      background: rgba(176,96,255,0.05);
+      border: 1px solid rgba(176,96,255,0.12);
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+    }
+    .license-block p { font-size: 0.78rem; color: #c0aee0; line-height: 1.7; }
+    .license-block strong { color: #b8a0d8; }
+    .back-link {
+      display: inline-block;
+      margin-top: 48px;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: #8070a8;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .back-link:hover { color: #c080ff; }
+    .copyright { font-size: 0.65rem; color: #504060; letter-spacing: 0.12em; margin-top: 48px; }
+    .footnote { font-size: 0.72rem; color: #604870; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-label">CREDITS</div>
+    <h1>クレジット</h1>
+
+    <div class="section-title">── STAFF ──</div>
+    <div id="staff-list"></div>
+
+    <div class="divider"></div>
+
+    <div class="section-title">── SPECIAL THANKS ──</div>
+    <div id="thanks-list"></div>
+
+    <div class="divider"></div>
+
+    <div class="section-title">── LIBRARIES & ASSETS ──</div>
+    <div id="libraries-list"></div>
+
+    <div class="divider"></div>
+    <p class="footnote" id="footnote"></p>
+    <div class="copyright" id="copyright"></div>
+    <a href="index.html" class="back-link">← タイトルへ戻る</a>
+  </div>
+
+  <script>
+    // スタッフを描画
+    const staffEl = document.getElementById('staff-list');
+    PAGE.staff.forEach(s => {
+      staffEl.innerHTML += `
+        <div class="credit-block">
+          <div class="credit-role">${s.role}</div>
+          <div class="credit-name">${s.name}</div>
+        </div>`;
+    });
+
+    // スペシャルサンクスを描画
+    const thanksEl = document.getElementById('thanks-list');
+    PAGE.specialThanks.forEach(t => {
+      thanksEl.innerHTML += `
+        <div class="credit-block">
+          <div class="credit-name">${t.name}</div>
+          ${t.note ? `<div class="credit-note">${t.note}</div>` : ''}
+        </div>`;
+    });
+
+    // ライブラリを描画
+    const libEl = document.getElementById('libraries-list');
+    PAGE.libraries.forEach(l => {
+      libEl.innerHTML += `
+        <div class="license-block">
+          <p><strong>${l.title}</strong><br>${l.description}</p>
+        </div>`;
+    });
+
+    // コピーライトを描画
+    document.getElementById('copyright').textContent = PAGE.copyright;
+
+    // 注釈を描画
+    const fnEl = document.getElementById('footnote');
+    if (PAGE.footnote) fnEl.textContent = PAGE.footnote;
+    else fnEl.style.display = 'none';
+  </script>
+</body>
+</html>

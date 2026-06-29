@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>インフォメーション | VTuber事務所シミュレーション</title>
+  <script>
+  /* =====================================================
+      テキスト編集エリア（ここだけ編集すればOKです）
+     ===================================================== */
+
+  const PAGE = {
+
+    /* ---------- お知らせ一覧 ----------
+       badge の種類: "NEW" / "UPDATE" / "FIX"
+       body は不要なら "" にしてください。
+    ---------------------------------------- */
+    updates: [
+      {
+        date:  "2026/06/30",
+        badge: "NEW",
+        title: "β版公開！",
+        body:  ""
+      },
+    ],
+
+    /* ---------- 推奨環境 ---------- */
+    environment: {
+      pc:         "Chrome / Edge / Firefox / Safari（最新版）",
+      smartphone: "iOS Safari / Android Chrome（最新版）",
+      note:       "JavaScript・Web Audio API を使用しています。ブラウザの設定によっては一部機能が制限される場合があります。"
+    },
+
+    /* ---------- このゲームについて / プレイ感想や問い合わせ ----------
+       type の種類:
+         "p"     → 文章（body は文字列、\n で改行）
+         "ul"    → 箇条書き（body は配列）
+         "links" → リンク一覧（body は {label, url} の配列）
+       formText + formUrl → ボタンリンクを表示（formUrl が空ならグレー表示）
+       note → 末尾の補足文（不要なら "" または削除）
+    ---------------------------------------- */
+    infoSections: [
+      {
+        heading: "このゲームについて",
+        intro: "趣味で作成した無料ゲームです。\n温かい目でお気軽に楽しんで頂けると幸いです。\nゲームバランスやバグについては今後随時修正が入る予定です。",
+        subsections: [
+          {
+            title: "開発環境",
+            type: "p",
+            body: "開発はClaude Coworkでバイブコーディングしています。\nイラスト画像は、Procreate、CLIP STUDIOで作成した作者の手書きです。サムネ等の素材はCanvaを使用しています。\n主な動作確認は、WindowsのEdge、iPhoneのSafariでおこなっています。"
+          },
+          {
+            title: "β版について",
+            type: "p",
+            body: "試作的な部分が多いため、細かい調整を随時おこないます。\n特に画像や数値の微調整はサイレントでおこないます。\n大きな変更があった際は、このページのアップデート情報に記載します。\nまた、突然非公開にする可能性もありますのでご了承下さい。"
+          }
+        ]
+      },
+      {
+        heading: "プレイ感想や問い合わせ",
+        intro: "",
+        subsections: [
+          {
+            title: "感想、ご意見、ハッシュタグ",
+            type: "p",
+            body: "ご自身のプレイのスクリーンショットや動画の撮影・投稿は全編OKです。\nSNSに投稿の際は「#ぶいしみゅ」をつけてどんな風に遊んだか見せて頂けると、モチベアップ＆今後の改良に役立つのでとても嬉しいです。\n一言だけの感想でも有り難いです！\n（画像の二次利用や自作発言はしないで下さい）"
+          },
+          {
+            title: "バグ報告",
+            type: "p",
+            body: "対応できた際にはこちらのinformationのアップデート情報でお知らせします。\n（すべてのバグへの対応は難しいのでご了承下さい）",
+
+          },
+          {
+            title: "問い合わせ",
+            type: "p",
+            body: "ゲームに関するご相談やお問い合わせは、以下のフォームからお願いします。",
+            formText: "お問い合わせフォーム",
+            formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSeg7pUbNn_bHLb2yHVk0hRpP5EJ_hovJ2pkOxk7F3wK3DC4CA/viewform"
+          },
+          {
+            title: "作者のSNS",
+            type: "links",
+            body: [
+              { label: "X",         url: "https://x.com/utadays" },
+              { label: "Instagram", url: "https://www.instagram.com/utadays" },
+              { label: "YouTube",   url: "https://www.youtube.com/@utamakings6291" },
+              { label: "note",      url: "https://note.com/utadays" }
+            ],
+            note: "（普段はアナログのハンドメイドを中心に活動しています）"
+          },
+          {
+            title: "今後改良したい点と夢",
+            type: "ul",
+            body: [
+              "各種数値、難易度のバランス調整",
+              "エンディング種類の追加",
+              "ガワ画像のパターン追加（キャラの追加、表情の追加等）",
+              "効果音の追加・変更",
+              "ガワ画像に各ローカルの画像を使えるようにしたい",
+              "なんなら他の人に絵素材を描いてもらい実装したい（別デザインバージョンとか）",
+              "何かボイスが出たらいいな、音声合成とか",
+              "よりVtuberなイベントや機能を追加したい（新衣装お披露目、3Dお披露目、コンプラ研修、卒業生が奇跡の復帰etc）",
+              "（アイデアや要望あればハッシュタグか問い合わせフォームまで！）"
+            ]
+          }
+        ]
+      }
+    ],
+
+    /* ---------- 一番下の注釈（不要なら ""） ---------- */
+    footnote: ""
+
+  };
+
+  /* =====================================================
+      ここから下は触らないでください
+     ===================================================== */
+  </script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #04040e;
+      color: #fff;
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', Meiryo, sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px 60px;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    .page-label { font-size: 0.65rem; letter-spacing: 0.4em; color: #8070a8; text-transform: uppercase; margin-bottom: 12px; }
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #d080ff 0%, #80d0ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 40px;
+      filter: drop-shadow(0 0 18px rgba(176,96,255,0.5));
+    }
+    .news-item { border-bottom: 1px solid rgba(176,96,255,0.1); padding: 22px 0; display: flex; gap: 20px; align-items: flex-start; }
+    .news-item:first-of-type { padding-top: 0; }
+    .news-meta { flex-shrink: 0; width: 110px; }
+    .news-date { font-size: 0.68rem; letter-spacing: 0.08em; color: #a090c8; margin-bottom: 6px; }
+    .news-badge { display: inline-block; font-size: 0.58rem; letter-spacing: 0.1em; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; }
+    .badge-NEW    { background: rgba(176,96,255,0.2);  border: 1px solid rgba(176,96,255,0.4);  color: #c080ff; }
+    .badge-UPDATE { background: rgba(0,200,180,0.15);  border: 1px solid rgba(0,200,180,0.35);  color: #40d0c0; }
+    .badge-FIX    { background: rgba(255,160,60,0.12); border: 1px solid rgba(255,160,60,0.3);  color: #ffb060; }
+    .news-body h3 { font-size: 0.92rem; font-weight: 700; color: #c8b8e8; margin-bottom: 6px; line-height: 1.4; }
+    .news-body p  { font-size: 0.8rem; color: #c0aee0; line-height: 1.75; }
+    .section-title { font-size: 0.7rem; letter-spacing: 0.35em; color: #c080ff; text-transform: uppercase; margin-bottom: 4px; }
+    .env-text { margin-top: 20px; font-size: 0.82rem; color: #c0aee0; line-height: 2; }
+    .info-section { margin-bottom: 8px; }
+    .info-section-heading { font-size: 1rem; font-weight: 800; color: #d8c8f0; letter-spacing: 0.06em; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(176,96,255,0.25); }
+    .info-section-intro { font-size: 0.84rem; color: #c0aee0; line-height: 1.85; margin-bottom: 24px; }
+    .info-section-intro p { margin-bottom: 2px; }
+    .subsection { margin-bottom: 28px; padding-left: 16px; border-left: 2px solid rgba(176,96,255,0.25); }
+    .subsection-title { font-size: 0.78rem; font-weight: 700; color: #b890e8; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .subsection p { font-size: 0.82rem; color: #c0aee0; line-height: 1.85; margin-bottom: 2px; }
+    .subsection ul { padding-left: 1.3em; }
+    .subsection li { font-size: 0.82rem; color: #c0aee0; line-height: 1.85; margin-bottom: 2px; }
+    .subsection-note { font-size: 0.75rem; color: #9080b8; margin-top: 8px; }
+    .link-list { list-style: none; padding: 0; }
+    .link-list li { margin-bottom: 6px; }
+    .link-list a { font-size: 0.82rem; color: #a880e0; text-decoration: none; transition: color 0.2s; }
+    .link-list a:hover { color: #d0a0ff; text-decoration: underline; }
+    .form-link { display: inline-block; margin: 8px 0 4px; font-size: 0.78rem; padding: 5px 16px; border-radius: 4px; background: rgba(176,96,255,0.12); border: 1px solid rgba(176,96,255,0.3); color: #c080ff; text-decoration: none; transition: background 0.2s; }
+    .form-link:hover { background: rgba(176,96,255,0.25); color: #e0a0ff; }
+    .form-link-placeholder { display: inline-block; margin: 8px 0 4px; font-size: 0.78rem; padding: 5px 16px; border-radius: 4px; background: rgba(100,80,120,0.1); border: 1px solid rgba(100,80,120,0.2); color: #806090; }
+    .back-link { display: inline-block; margin-top: 48px; font-size: 0.7rem; letter-spacing: 0.25em; color: #8070a8; text-decoration: none; transition: color 0.25s; }
+    .back-link:hover { color: #c080ff; }
+    hr { border: none; border-top: 1px solid rgba(176,96,255,0.1); margin: 40px 0; }
+    .footnote { font-size: 0.72rem; color: #604870; }
+    @media (max-width: 480px) {
+      .news-item { flex-direction: column; gap: 8px; }
+      .news-meta { width: auto; display: flex; align-items: center; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-label">INFORMATION</div>
+    <h1>インフォメーション</h1>
+
+    <div class="section-title">── お知らせ ──</div>
+    <div id="updates-list"></div>
+
+    <hr>
+
+    <div id="info-sections"></div>
+
+    <div class="section-title">── 推奨環境 ──</div>
+    <div class="env-text" id="env-block"></div>
+
+    <hr>
+    <p class="footnote" id="footnote"></p>
+    <a href="index.html" class="back-link">← タイトルへ戻る</a>
+  </div>
+
+  <script>
+    function esc(str) {
+      return String(str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function renderLines(text) {
+      return text.split('\n').map(function(l){ return '<p>' + esc(l) + '</p>'; }).join('');
+    }
+
+    // お知らせ
+    var listEl = document.getElementById('updates-list');
+    PAGE.updates.forEach(function(item) {
+      listEl.innerHTML += '<div class="news-item">'
+        + '<div class="news-meta">'
+        + '<div class="news-date">' + esc(item.date) + '</div>'
+        + '<span class="news-badge badge-' + esc(item.badge) + '">' + esc(item.badge) + '</span>'
+        + '</div>'
+        + '<div class="news-body"><h3>' + esc(item.title) + '</h3>'
+        + (item.body ? '<p>' + esc(item.body) + '</p>' : '')
+        + '</div></div>';
+    });
+
+    // 推奨環境
+    var env = PAGE.environment;
+    document.getElementById('env-block').innerHTML =
+      '<p>本ゲームは以下の環境での動作を推奨しています。</p><br>'
+      + '<p>【PC】' + esc(env.pc) + '</p>'
+      + '<p>【スマートフォン】' + esc(env.smartphone) + '</p>'
+      + '<br><p>' + esc(env.note) + '</p>';
+
+    // infoSections
+    function renderSubsection(sub) {
+      var content = '';
+      if (sub.type === 'p') {
+        content += renderLines(sub.body);
+      } else if (sub.type === 'ul') {
+        content += '<ul>' + sub.body.map(function(i){ return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>';
+      } else if (sub.type === 'links') {
+        content += '<ul class="link-list">'
+          + sub.body.map(function(l){
+              return '<li><a href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.label) + '</a></li>';
+            }).join('')
+          + '</ul>';
+      }
+      if (sub.formText) {
+        if (sub.formUrl) {
+          content += '<a class="form-link" href="' + esc(sub.formUrl) + '" target="_blank" rel="noopener">▶ ' + esc(sub.formText) + '</a>';
+        } else {
+          content += '<span class="form-link-placeholder">▶ ' + esc(sub.formText) + '</span>';
+        }
+      }
+      if (sub.note) {
+        content += '<p class="subsection-note">' + esc(sub.note) + '</p>';
+      }
+      return '<div class="subsection"><div class="subsection-title">💫 ' + esc(sub.title) + '</div>' + content + '</div>';
+    }
+
+    var sectionsEl = document.getElementById('info-sections');
+    PAGE.infoSections.forEach(function(section, idx) {
+      var html = '<div class="info-section">';
+      html += '<div class="info-section-heading">⭐️ ' + esc(section.heading) + '</div>';
+      if (section.intro) {
+        html += '<div class="info-section-intro">' + renderLines(section.intro) + '</div>';
+      }
+      section.subsections.forEach(function(sub) {
+        html += renderSubsection(sub);
+      });
+      html += '</div>';
+      if (idx < PAGE.infoSections.length - 1) html += '<hr>';
+      sectionsEl.innerHTML += html;
+    });
+    sectionsEl.innerHTML += '<hr>';
+
+    // 注釈
+    var fnEl = document.getElementById('footnote');
+    if (PAGE.footnote) { fnEl.textContent = PAGE.footnote; } else { fnEl.style.display = 'none'; }
+  </script>
+</body>
+</html>
